@@ -271319,6 +271319,8 @@ oktastylos
 okthabah
 okuari
 okupukupu
+okurigana
+okuzgozu
 ol
 ola
 olacaceae
@@ -428287,11 +428289,10 @@ twyfold
 twyford
 twyhynde
 twyver
-tx
-txalaparta
 txakoli
+txalaparta
 txistu
-txt
+txoko
 tyauve
 tybalt
 tyburn
@@ -475007,7 +475008,6 @@ oyakodon
 waghalsiger
 waghalsigers
 qaraqalpaq
-qaraqalpaqs
 tempoyak
 haak-en-steek
 haak-en-steeks
@@ -475034,3 +475034,8 @@ fwelling
 lwalaw
 phurcalite
 phurcalites
+gazebo
+robloxian
+roblox
+ugc
+alvocidib
