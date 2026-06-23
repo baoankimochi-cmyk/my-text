@@ -132617,7 +132617,6 @@ ersatzes
 erse
 erses
 ersh
-erskine
 erst
 erstwhile
 erstwhiles
@@ -174636,7 +174635,6 @@ hellness
 hello
 helloed
 helloes
-helloeveryoneiwouldliketoaddresstherecentaccusationsclaimingthatiamusingcheatsinthegameiwanttoclearlystatethatidonotuseanyformofcheatingorunfairassistanceihaveonlyrecentlystartedplayingandmyperformanceisbasedentirelyonmyownskillsandexperienceinreallifeiworkwiththeoxfordenglishdictionarywhichmeansiregularlyworkwithenglishvocabularyataprofessionallevelbecauseofthisbackgroundiamnaturallyfastatrecognizingandtypingwordsmyprogressintherankingsissimplytheresultofpracticeexperienceandfamiliaritywiththelanguageihavenointentionofmisleadinganyoneandiamfullyconfidentinmyabilitiesifnecessaryicanevenprovideproofofmyemplox
 helloing
 hellos
 hellova
@@ -401803,11 +401801,11 @@ suzettes
 suzhousaurus
 suzuki
 suzy
-sv
 svabite
-svalbard
 svamin
 svan
+svanbergite
+svanbergites
 svanetian
 svanish
 svante
@@ -401821,7 +401819,6 @@ svarajs
 svarloka
 svastika
 svastikas
-svc
 svce
 svedberg
 svedbergs
@@ -401839,6 +401836,8 @@ sverige
 svetambara
 svgs
 sviatonosite
+svyatoslavite
+svyatoslavites
 sw
 swa
 swab
@@ -464934,8 +464933,6 @@ werrises
 wersh
 wersher
 wershest
-werslete
-werste
 wert
 werther
 wertherian
