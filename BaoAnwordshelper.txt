@@ -30063,7 +30063,6 @@ avicenniaceae
 avicennism
 avichi
 avicide
-avick
 avicolous
 avicula
 avicular
@@ -86870,7 +86869,6 @@ coryza
 coryzal
 coryzas
 cos
-cosa
 cosalite
 cosaque
 cosavior
@@ -153237,6 +153235,8 @@ frypan
 frypans
 fs
 fsr
+fsiest
+fstore
 ftw
 fu
 fuage
@@ -471111,7 +471111,6 @@ yakows
 yaks
 yaksha
 yakshi
-yaksik
 yakut
 yakutat
 yakuts
@@ -474684,7 +474683,6 @@ olanzapine
 osumilite
 he'd've
 oksapmin
-fst
 ndonde
 afelimomab
 moombahsoul
@@ -474894,7 +474892,6 @@ kokuji
 omikuji
 supercalifragilistic
 ionoregulation
-fstr
 acitretin
 timothy
 etesevimab
@@ -475081,7 +475078,7 @@ r-loop
 verfremdungseffekt
 verfremdungseffekte
 fwelling
-lwalaw
+lwalwa
 phurcalite
 phurcalites
 gazebo
@@ -475091,3 +475088,11 @@ ugc
 alvocidib
 otchipwe
 ngondo
+eckermannite
+eckermannites
+we'd've
+stabij
+ponsegromab
+wtaf
+yangon
+
