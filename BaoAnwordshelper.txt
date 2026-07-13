@@ -475580,7 +475580,7 @@ rvalues
 tkemali
 djurleite
 djurlites
-rhudka
+hrudka
 tcg
 hlengwe
 lgbtqi
@@ -475588,3 +475588,17 @@ lgbtqia
 qazi
 zweihander
 zweihanders
+xvalue
+xvalues
+hsuan
+hsi
+xueshuantong
+xuezhikang
+qilin
+qilins
+wiikites
+hiiragi
+hiiragis
+hmu
+biinvariant
+riichi
