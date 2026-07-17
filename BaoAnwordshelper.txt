@@ -237966,7 +237966,7 @@ mezzotinto
 mezzotintos
 mezzotints
 mf
-mfd
+mmfd
 mfg
 mfr
 mg
@@ -475865,6 +475865,8 @@ stop-off
 stop-offs
 ping-pong
 ping-pongs
+ping-ponging
+ping-ponged
 built-in
 cut-in
 shut-in
@@ -476029,8 +476031,6 @@ letermovir
 letermovirs
 lasmiditan
 lasmiditans
-opha
-vris
 utkatasana
 utkatasana
 gutka
@@ -476078,3 +476078,15 @@ o-modules
 slo-mo
 pve
 ffs
+ndembu
+ndembus
+lwena
+heikegani
+ifenprodil
+ifenprodils
+icatibant
+icatibants
+etoricoxib
+etoricoxibs
+etorphine
+etorphines
