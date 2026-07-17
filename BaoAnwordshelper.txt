@@ -355677,10 +355677,8 @@ samfu
 samfus
 samgarnebo
 samgha
-samh
 samhain
-samhin
-samhita
+samhains
 sami
 samian
 samiel
@@ -476090,3 +476088,14 @@ etoricoxib
 etoricoxibs
 etorphine
 etorphines
+eculizumab
+hinayanas
+lausenite
+lausenites
+mbukushu
+antumbra
+antumbras
+antumbrae
+icchantika
+icchantikas
+ezdixum
