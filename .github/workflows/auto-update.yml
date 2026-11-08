@@ -1,1 +1,28 @@
+name: Auto Update Text File
 
+on:
+  # Chạy tự động theo lịch (ví dụ: cứ mỗi 6 giờ sáng hàng ngày theo giờ UTC)
+  schedule:
+    - cron: '0 23 * * *'
+  
+  # Cho phép bấm nút chạy thủ công trên web GitHub (Workflow dispatch)
+  workflow_dispatch:
+
+jobs:
+  update-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # (Tùy chọn) Nếu bạn có một script hoặc nguồn dữ liệu nào đó cần cào/tải về để cập nhật vào file txt
+      # Ví dụ: cập nhật thời gian hiện tại vào file log.txt để test
+      - name: Update file content
+        run: |
+          echo "Last updated at: $(date)" >> update_log.txt
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-update text file via GitHub Actions"
+          branch: main
