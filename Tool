@@ -196,9 +196,9 @@ local function FetchWords()
     
     if success and res and res.Body then
         writefile(fileName, res.Body)
-        UpdateStatus("Fetched successfully!", THEME.Success)
+        UpdateStatus("kết nối thành công!", THEME.Success)
     else
-        UpdateStatus("Fetch failed! Using cached.", Color3.fromRGB(255, 80, 80))
+        UpdateStatus("kết nối ko thành công :O", Color3.fromRGB(255, 80, 80))
     end
     task.wait(0.5)
 end
@@ -596,7 +596,7 @@ SearchBox.BackgroundTransparency = 1
 SearchBox.Font = Enum.Font.Gotham
 SearchBox.TextSize = 14
 SearchBox.TextColor3 = THEME.Text
-SearchBox.PlaceholderText = "Search words..."
+SearchBox.PlaceholderText = "tìm từ..."
 SearchBox.PlaceholderColor3 = THEME.SubText
 SearchBox.Text = ""
 SearchBox.TextXAlignment = Enum.TextXAlignment.Left
