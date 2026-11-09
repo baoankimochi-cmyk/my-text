@@ -147,7 +147,7 @@ local fileName = "ultimate_words_v4.txt"
 
 -- Temporary Loading UI
 local LoadingGui = Instance.new("ScreenGui")
-LoadingGui.Name = "WordHelperLoading"
+LoadingGui.Name = "BaoAnWordHelper đang tải.."
 local success, parent = pcall(function() return gethui() end)
 if not success or not parent then parent = game:GetService("CoreGui") end
 LoadingGui.Parent = parent
@@ -189,7 +189,7 @@ end
 
 -- Startup: Always fetch fresh word list
 local function FetchWords()
-    UpdateStatus("Fetching latest word list...", THEME.Warning)
+    UpdateStatus("đang quét danh sách từ... chờ tí..", THEME.Warning)
     local success, res = pcall(function()
         return request({Url = url, Method = "GET"})
     end)
@@ -219,9 +219,9 @@ local function LoadList(fname)
                 table.insert(Words, clean)
             end
         end
-        UpdateStatus("Loaded " .. #Words .. " words!", THEME.Success)
+        UpdateStatus("đã quét " .. #Words .. " từ!", THEME.Success)
     else
-         UpdateStatus("No word list found!", Color3.fromRGB(255, 80, 80))
+         UpdateStatus("Ko tìm thấy danh sách.", Color3.fromRGB(255, 80, 80))
     end
     task.wait(1)
 end
@@ -521,7 +521,7 @@ Header.BackgroundColor3 = THEME.ItemBG
 Header.BorderSizePixel = 0
 
 local Title = Instance.new("TextLabel", Header)
-Title.Text = "Word<font color=\"rgb(114,100,255)\">Helper</font> V4"
+Title.Text = "Word<font color=\"rgb(114,100,255)\">Helper</font> :]"
 Title.RichText = true
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 18
@@ -2739,7 +2739,7 @@ runConn = RunService.RenderStepped:Connect(function()
             lastRequiredLetter = requiredLetter
             
             if detected == "" and not forceUpdateList then
-                StatusText.Text = "Waiting..."
+                StatusText.Text = "Đang chờ..."
                 StatusText.TextColor3 = THEME.SubText
                 Tween(StatusDot, {BackgroundColor3 = THEME.SubText})
                 
