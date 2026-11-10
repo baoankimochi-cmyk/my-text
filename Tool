@@ -27,7 +27,7 @@ math.randomseed(os.time())
 local THEME = {
     Background = Color3.fromRGB(20, 20, 24),
     ItemBG = Color3.fromRGB(32, 32, 38),
-    Accent = Color3.fromRGB(114, 100, 255),
+    Accent = Color3.fromRGB(0, 184, 212),
     Text = Color3.fromRGB(240, 240, 240),
     SubText = Color3.fromRGB(150, 150, 160),
     Success = Color3.fromRGB(100, 255, 140),
@@ -121,6 +121,7 @@ local cachedCensored = false
 local LOGIC_RATE = 0.1
 local AUTO_JOIN_RATE = 0.5
 local UpdateList
+local ReloadDictionary
 local ButtonCache = {}
 local ButtonData = {}
 local JoinDebounce = {}
@@ -167,7 +168,7 @@ LStroke.Thickness = 2
 local LoadingTitle = Instance.new("TextLabel", LoadingFrame)
 LoadingTitle.Size = UDim2.new(1, 0, 0, 40)
 LoadingTitle.BackgroundTransparency = 1
-LoadingTitle.Text = "AnProzzz dictionary :P"
+LoadingTitle.Text = "Từ điển BaoAn :P"
 LoadingTitle.TextColor3 = THEME.Accent
 LoadingTitle.Font = Enum.Font.GothamBold
 LoadingTitle.TextSize = 18
@@ -176,7 +177,7 @@ local LoadingStatus = Instance.new("TextLabel", LoadingFrame)
 LoadingStatus.Size = UDim2.new(1, -20, 0, 30)
 LoadingStatus.Position = UDim2.new(0, 10, 0, 50)
 LoadingStatus.BackgroundTransparency = 1
-LoadingStatus.Text = "Initializing..."
+LoadingStatus.Text = "Đang khởi tạo..."
 LoadingStatus.TextColor3 = THEME.Text
 LoadingStatus.Font = Enum.Font.Gotham
 LoadingStatus.TextSize = 14
@@ -521,12 +522,12 @@ Header.BackgroundColor3 = THEME.ItemBG
 Header.BorderSizePixel = 0
 
 local Title = Instance.new("TextLabel", Header)
-Title.Text = "AN<font color=\"rgb(114,100,255)\">Dictionaryx</font> :]"
+Title.Text = "AN<font color=\"rgb(0,184,212)\">Dictionaryx</font> :]"
 Title.RichText = true
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 18
 Title.TextColor3 = THEME.Text
-Title.Size = UDim2.new(1, -50, 1, 0)
+Title.Size = UDim2.new(1, -125, 1, 0)
 Title.Position = UDim2.new(0, 15, 0, 0)
 Title.BackgroundTransparency = 1
 Title.TextXAlignment = Enum.TextXAlignment.Left
@@ -539,6 +540,27 @@ MinBtn.TextColor3 = THEME.SubText
 MinBtn.Size = UDim2.new(0, 45, 1, 0)
 MinBtn.Position = UDim2.new(1, -90, 0, 0)
 MinBtn.BackgroundTransparency = 1
+
+local ReloadBtn = Instance.new("TextButton", Header)
+ReloadBtn.Name = "ReloadDictionaryButton"
+ReloadBtn:SetAttribute("MoTa", "Tải lại từ điển từ GitHub")
+ReloadBtn.Text = "↻"
+ReloadBtn.Font = Enum.Font.GothamBold
+ReloadBtn.TextSize = 22
+ReloadBtn.TextColor3 = THEME.Accent
+ReloadBtn.Size = UDim2.new(0, 35, 1, 0)
+ReloadBtn.Position = UDim2.new(1, -125, 0, 0)
+ReloadBtn.BackgroundTransparency = 1
+ReloadBtn.AutoButtonColor = true
+ReloadBtn.MouseButton1Click:Connect(function()
+    if ReloadDictionary then
+        ReloadBtn.Text = "..."
+        ReloadDictionary()
+        ReloadBtn.Text = "↻"
+    else
+        ShowToast("Chức năng tải lại chưa sẵn sàng", "warning")
+    end
+end)
 
 local CloseBtn = Instance.new("TextButton", Header)
 CloseBtn.Text = "X"
@@ -573,7 +595,7 @@ StatusDot.BackgroundColor3 = THEME.SubText
 Instance.new("UICorner", StatusDot).CornerRadius = UDim.new(1, 0)
 
 local StatusText = Instance.new("TextLabel", StatusFrame)
-StatusText.Text = "Idle..."
+StatusText.Text = "Đang chờ..."
 StatusText.RichText = true
 StatusText.Font = Enum.Font.Gotham
 StatusText.TextSize = 12
@@ -653,7 +675,7 @@ end
 UpdateLayout()
 
 local ExpandBtn = Instance.new("TextButton", SlidersFrame)
-ExpandBtn.Text = "v Show Settings v"
+ExpandBtn.Text = "v Hiện cài đặt v"
 ExpandBtn.Font = Enum.Font.GothamBold
 ExpandBtn.TextSize = 14
 ExpandBtn.TextColor3 = THEME.Accent
@@ -911,7 +933,7 @@ SetupSlider(ErrorBtn, ErrorBg, ErrorFill, function(pct)
     errorRate = math.floor(pct * 30)
     Config.ErrorRate = errorRate
     ErrorFill.Size = UDim2.new(pct, 0, 1, 0)
-    ErrorLabel.Text = "Error Rate: " .. errorRate .. "% (per-letter)"
+    ErrorLabel.Text = "Tỉ lệ gõ sai: " .. errorRate .. "% (per-letter)"
 end)
 
 local ThinkLabel = Instance.new("TextLabel", SlidersFrame)
@@ -1011,7 +1033,7 @@ end)
 AutoBtn.TextColor3 = autoPlay and THEME.Success or Color3.fromRGB(255, 100, 100)
 AutoBtn.Size = UDim2.new(0, 130, 0, 24)
 
-local AutoJoinBtn = CreateToggle("tự động Join: "..(autoJoin and "bật" or "tắt"), UDim2.new(0, 15, 0, 61), function()
+local AutoJoinBtn = CreateToggle("Tự động tham gia: "..(autoJoin and "bật" or "tắt"), UDim2.new(0, 15, 0, 61), function()
     autoJoin = not autoJoin
     Config.AutoJoin = autoJoin
     return autoJoin, "tự động join: "..(autoJoin and "bật" or "tắt"), autoJoin and THEME.Success or Color3.fromRGB(255, 100, 100)
@@ -1106,7 +1128,7 @@ local WordBrowserBtn = Instance.new("TextButton", TogglesFrame)
 WordBrowserBtn.Text = "Tra từ"
 WordBrowserBtn.Font = Enum.Font.GothamMedium
 WordBrowserBtn.TextSize = 11
-WordBrowserBtn.TextColor3 = Color3.fromRGB(200, 150, 255)
+WordBrowserBtn.TextColor3 = THEME.Accent
 WordBrowserBtn.BackgroundColor3 = THEME.Background
 WordBrowserBtn.Size = UDim2.new(0, 265, 0, 24)
 WordBrowserBtn.Position = UDim2.new(0, 15, 0, 175)
@@ -1116,11 +1138,21 @@ local ServerBrowserBtn = Instance.new("TextButton", TogglesFrame)
 ServerBrowserBtn.Text = "Tra server"
 ServerBrowserBtn.Font = Enum.Font.GothamMedium
 ServerBrowserBtn.TextSize = 11
-ServerBrowserBtn.TextColor3 = Color3.fromRGB(100, 200, 255)
+ServerBrowserBtn.TextColor3 = THEME.Accent
 ServerBrowserBtn.BackgroundColor3 = THEME.Background
 ServerBrowserBtn.Size = UDim2.new(0, 265, 0, 24)
 ServerBrowserBtn.Position = UDim2.new(0, 15, 0, 205)
 Instance.new("UICorner", ServerBrowserBtn).CornerRadius = UDim.new(0, 4)
+
+local TrapFinderBtn = Instance.new("TextButton", TogglesFrame)
+TrapFinderBtn.Text = "Tìm từ bẫy"
+TrapFinderBtn.Font = Enum.Font.GothamMedium
+TrapFinderBtn.TextSize = 11
+TrapFinderBtn.TextColor3 = THEME.Warning
+TrapFinderBtn.BackgroundColor3 = THEME.Background
+TrapFinderBtn.Size = UDim2.new(0, 265, 0, 24)
+TrapFinderBtn.Position = UDim2.new(0, 15, 0, 235)
+Instance.new("UICorner", TrapFinderBtn).CornerRadius = UDim.new(0, 4)
 
 local CustomWordsFrame = Instance.new("Frame", ScreenGui)
 CustomWordsFrame.Name = "CustomWordsFrame"
@@ -1137,7 +1169,7 @@ CWStroke.Transparency = 0.5
 CWStroke.Thickness = 2
 
 local CWHeader = Instance.new("TextLabel", CustomWordsFrame)
-CWHeader.Text = "Custom Words Manager"
+CWHeader.Text = "Quản lý từ tùy chỉnh"
 CWHeader.Font = Enum.Font.GothamBold
 CWHeader.TextSize = 14
 CWHeader.TextColor3 = THEME.Text
@@ -1210,7 +1242,7 @@ Instance.new("UICorner", CWAddBox).CornerRadius = UDim.new(0, 4)
 SetupPhantomBox(CWAddBox, "Add new word...")
 
 local CWAddBtn = Instance.new("TextButton", CustomWordsFrame)
-CWAddBtn.Text = "Add"
+CWAddBtn.Text = "Thêm"
 CWAddBtn.Font = Enum.Font.GothamBold
 CWAddBtn.TextSize = 11
 CWAddBtn.TextColor3 = THEME.Success
@@ -1344,7 +1376,7 @@ SBStroke.Transparency = 0.5
 SBStroke.Thickness = 2
 
 local SBHeader = Instance.new("TextLabel", ServerFrame)
-SBHeader.Text = "Server Browser"
+SBHeader.Text = "Danh sách máy chủ"
 SBHeader.Font = Enum.Font.GothamBold
 SBHeader.TextSize = 16
 SBHeader.TextColor3 = THEME.Text
@@ -1375,7 +1407,7 @@ SBLayout.SortOrder = Enum.SortOrder.LayoutOrder
 local ServerSortMode = "Smallest"
 
 local SBSortBtn = Instance.new("TextButton", ServerFrame)
-SBSortBtn.Text = "Sort: Smallest"
+SBSortBtn.Text = "Sắp xếp: Ít người nhất"
 SBSortBtn.Font = Enum.Font.GothamBold
 SBSortBtn.TextSize = 12
 SBSortBtn.BackgroundColor3 = THEME.ItemBG
@@ -1385,7 +1417,7 @@ SBSortBtn.Position = UDim2.new(0, 10, 1, -40)
 Instance.new("UICorner", SBSortBtn).CornerRadius = UDim.new(0, 6)
 
 local SBRefresh = Instance.new("TextButton", ServerFrame)
-SBRefresh.Text = "Refresh"
+SBRefresh.Text = "Làm mới"
 SBRefresh.Font = Enum.Font.GothamBold
 SBRefresh.TextSize = 12
 SBRefresh.BackgroundColor3 = THEME.Accent
@@ -1427,7 +1459,7 @@ local function FetchServers()
                         Instance.new("UICorner", row).CornerRadius = UDim.new(0, 6)
                         
                         local info = Instance.new("TextLabel", row)
-                        info.Text = "Players: " .. srv.playing .. " / " .. srv.maxPlayers .. "\nPing: " .. (srv.ping or "?") .. "ms"
+                        info.Text = "Người chơi: " .. srv.playing .. " / " .. srv.maxPlayers .. "\nPing: " .. (srv.ping or "?") .. "ms"
                         info.Size = UDim2.new(0.6, 0, 1, 0)
                         info.Position = UDim2.new(0, 10, 0, 0)
                         info.BackgroundTransparency = 1
@@ -1437,7 +1469,7 @@ local function FetchServers()
                         info.TextXAlignment = Enum.TextXAlignment.Left
                         
                         local join = Instance.new("TextButton", row)
-                        join.Text = "Join"
+                        join.Text = "Tham gia"
                         join.BackgroundColor3 = Color3.fromRGB(100, 200, 100)
                         join.Size = UDim2.new(0, 80, 0, 25)
                         join.Position = UDim2.new(1, -90, 0.5, -12.5)
@@ -1447,7 +1479,7 @@ local function FetchServers()
                         Instance.new("UICorner", join).CornerRadius = UDim.new(0, 4)
                         
                         join.MouseButton1Click:Connect(function()
-                            join.Text = "Joining..."
+                            join.Text = "Đang tham gia..."
                             ShowToast("Teleporting...", "success")
                             
                             if queue_on_teleport then
@@ -1459,10 +1491,10 @@ local function FetchServers()
                                     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, srv.id, Players.LocalPlayer)
                                 end)
                                 if not success then
-                                    join.Text = "Failed"
+                                    join.Text = "Thất bại"
                                     ShowToast("Teleport Failed: " .. tostring(err), "error")
                                     task.wait(2)
-                                    join.Text = "Join"
+                                    join.Text = "Tham gia"
                                 end
                             end)
                         end)
@@ -1474,7 +1506,7 @@ local function FetchServers()
         else
             ShowToast("Failed to fetch servers", "error")
         end
-        SBRefresh.Text = "Refresh"
+        SBRefresh.Text = "Làm mới"
     end)
 end
 
@@ -1484,7 +1516,7 @@ SBSortBtn.MouseButton1Click:Connect(function()
     else
         ServerSortMode = "Smallest"
     end
-    SBSortBtn.Text = "Sort: " .. ServerSortMode
+    SBSortBtn.Text = "Sắp xếp: " .. ServerSortMode
     FetchServers()
 end)
 
@@ -1872,7 +1904,7 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
         if (tick() - lastTypingStart) > 15 then
             isTyping = false
             isAutoPlayScheduled = false
-            StatusText.Text = "Typing State Reset (Timeout)"
+            StatusText.Text = "Đã đặt lại trạng thái gõ (quá thời gian)"
             StatusText.TextColor3 = THEME.Warning
         else
             return
@@ -1888,7 +1920,7 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
         task.wait(0.1)
     end
     
-    StatusText.Text = "Typing..."
+    StatusText.Text = "Đang gõ..."
     StatusText.TextColor3 = THEME.Accent
     Tween(StatusDot, {BackgroundColor3 = THEME.Accent})
 
@@ -1932,7 +1964,7 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
                 task.wait(0.1)
                 finalCheck = GetGameTextBox()
                 if finalCheck and finalCheck.Text ~= targetWord then
-                     StatusText.Text = "Typing mismatch detected!"
+                     StatusText.Text = "Phát hiện lỗi lệch ký tự khi gõ!"
                      StatusText.TextColor3 = THEME.Warning
                      Backspace(#finalCheck.Text)
                      
@@ -1966,7 +1998,7 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
                     end
                 end
 
-                StatusText.Text = "Rejected: removed '" .. targetWord .. "'"
+                StatusText.Text = "Bị từ chối: đã xóa '" .. targetWord .. "'"
                 StatusText.TextColor3 = THEME.Warning
                 
                 local focused = UserInputService:GetFocusedTextBox()
@@ -1981,7 +2013,7 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
                 forceUpdateList = true
                 return
             else
-                StatusText.Text = "Word Cleared (Corrected)"
+                StatusText.Text = "Đã xóa từ (đã sửa)"
                 StatusText.TextColor3 = THEME.SubText
 
                 local current = GetCurrentGameWord()
@@ -2048,7 +2080,7 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
                 task.wait(0.1)
                 local finalCheck = GetGameTextBox()
                 if finalCheck and finalCheck.Text ~= targetWord then
-                    StatusText.Text = "Typing mismatch detected!"
+                    StatusText.Text = "Phát hiện lỗi lệch ký tự khi gõ!"
                     StatusText.TextColor3 = THEME.Warning
                     Backspace(#finalCheck.Text)
                     
@@ -2077,11 +2109,11 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
                 
                 local postCheck = GetGameTextBox()
                 if postCheck and postCheck.Text == targetWord then
-                     StatusText.Text = "Enter failed? Retrying..."
+                     StatusText.Text = "Gửi thất bại? Đang thử lại..."
                      PressEnter()
                      task.wait(0.5)
                      if GetCurrentGameWord() == currentDetected then
-                         StatusText.Text = "Submission Failed (Lag?)"
+                         StatusText.Text = "Gửi từ thất bại (có thể do lag)"
                          StatusText.TextColor3 = THEME.Warning
                          Backspace(#targetWord)
                          isTyping = false
@@ -2096,7 +2128,7 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
                         if list[i] == targetWord then table.remove(list, i) end
                     end
                 end
-                StatusText.Text = "Rejected: removed '" .. targetWord .. "'"
+                StatusText.Text = "Bị từ chối: đã xóa '" .. targetWord .. "'"
                 StatusText.TextColor3 = THEME.Warning
                 
                 local focused = UserInputService:GetFocusedTextBox()
@@ -2117,7 +2149,7 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
                 end)
                 return
             else
-                StatusText.Text = "Verification Failed"
+                StatusText.Text = "Xác minh thất bại"
                 StatusText.TextColor3 = THEME.Warning
                 
                 local current = GetCurrentGameWord()
@@ -2341,7 +2373,7 @@ UpdateList = function(detectedText, requiredLetter)
         local colors = {
             Color3.fromRGB(100, 255, 140),
             Color3.fromRGB(255, 180, 200),
-            Color3.fromRGB(100, 200, 255)
+            THEME.Accent
         }
         
         local targetKeys = {}
@@ -2378,10 +2410,10 @@ UpdateList = function(detectedText, requiredLetter)
         local validPart = searchPrefix
         local invalidPart = detectedText:sub(#searchPrefix + 1)
         local accentRGB = ColorToRGB(THEME.Accent)
-        StatusText.Text = "No match: <font color=\"rgb(" .. accentRGB .. ")\">" .. validPart .. "</font><font color=\"rgb(255,80,80)\">" .. invalidPart .. "</font>"
+        StatusText.Text = "Không khớp: <font color=\"rgb(" .. accentRGB .. ")\">" .. validPart .. "</font><font color=\"rgb(255,80,80)\">" .. invalidPart .. "</font>"
         StatusText.TextColor3 = THEME.SubText
     elseif #exacts == 0 and lengthMode > 0 and suffixMode ~= "" then
-         StatusText.Text = "No len match (showing all)"
+         StatusText.Text = "Không khớp độ dài (đang hiện tất cả)"
          StatusText.TextColor3 = THEME.Warning
     end
 
@@ -2472,7 +2504,7 @@ SetupSlider(SliderBtn, SliderBg, SliderFill, function(pct)
     local max = isBlatant and MAX_CPM_BLATANT or MAX_CPM_LEGIT
     currentCPM = math.floor(MIN_CPM + (pct * (max - MIN_CPM)))
     SliderFill.Size = UDim2.new(pct, 0, 1, 0)
-    SliderLabel.Text = "Speed: " .. currentCPM .. " CPM"
+    SliderLabel.Text = "Tốc độ: " .. currentCPM .. " CPM"
     if currentCPM > 900 then Tween(SliderFill, {BackgroundColor3 = Color3.fromRGB(255,80,80)}) 
     else Tween(SliderFill, {BackgroundColor3 = THEME.Accent}) end
 end)
@@ -2497,6 +2529,310 @@ end)
 
 local lastTypeVisible = false
 local lastRequiredLetter = ""
+
+-- Tải lại từ điển từ GitHub, giữ nguyên các bảng Words/Buckets để mọi chức năng đang dùng tiếp tục hoạt động.
+ReloadDictionary = function()
+    if not request then
+        ShowToast("Executor không hỗ trợ tải dữ liệu HTTP", "error")
+        return false
+    end
+
+    ShowToast("Đang tải lại từ điển từ GitHub...", "warning")
+    local ok, response = pcall(function()
+        return request({Url = url, Method = "GET"})
+    end)
+    if not ok or not response or not response.Body or (response.StatusCode and response.StatusCode >= 400) then
+        ShowToast("Tải từ điển thất bại; vẫn giữ dữ liệu cũ", "error")
+        return false
+    end
+
+    local content = response.Body
+    if writefile then
+        pcall(function() writefile(fileName, content) end)
+    end
+
+    local newWords, seen = {}, {}
+    for word in content:gmatch("[^\r\n]+") do
+        local clean = word:gsub("[%s%c]+", ""):lower()
+        if #clean > 0 and not seen[clean] then
+            seen[clean] = true
+            table.insert(newWords, clean)
+        end
+    end
+
+    -- Gộp lại từ tùy chỉnh, tránh mất các từ người dùng tự thêm.
+    for _, word in ipairs(Config.CustomWords or {}) do
+        local clean = tostring(word):gsub("[%s%c]+", ""):lower()
+        if #clean > 0 and not seen[clean] then
+            seen[clean] = true
+            table.insert(newWords, clean)
+        end
+    end
+
+    table.sort(newWords)
+    table.clear(Words)
+    for _, word in ipairs(newWords) do table.insert(Words, word) end
+    table.clear(Buckets)
+    for _, word in ipairs(Words) do
+        local first = word:sub(1, 1)
+        if first == "" then first = "#" end
+        Buckets[first] = Buckets[first] or {}
+        table.insert(Buckets[first], word)
+    end
+
+    RandomOrderCache = {}
+    RandomPriority = {}
+    currentBestMatch = nil
+    forceUpdateList = true
+    if UpdateList then
+        UpdateList(lastDetected, lastRequiredLetter)
+    end
+    ShowToast("Đã tải lại " .. #Words .. " từ thành công", "success")
+    return true
+end
+
+-- Trap Finder: URL danh sách hậu tố trên GitHub.
+local TRAP_SUFFIX_URL = "https://raw.githubusercontent.com/baoankimochi-cmyk/my-text/refs/heads/main/TrapLastletter.txt"
+local TrapSuffixes = {}
+local TrapSuffixesLoaded = false
+
+local function FetchTrapSuffixes()
+    if not request then
+        return false, "Executor không hỗ trợ yêu cầu HTTP"
+    end
+    if TRAP_SUFFIX_URL == "" or TRAP_SUFFIX_URL == "PASTE_RAW_GITHUB_URL_HERE" then
+        return false, "Chưa thêm Raw URL của traps.txt"
+    end
+
+    local ok, response = pcall(function()
+        return request({Url = TRAP_SUFFIX_URL, Method = "GET"})
+    end)
+    if not ok or not response or not response.Body or response.StatusCode and response.StatusCode >= 400 then
+        return false, "Không tải được danh sách bẫy từ GitHub"
+    end
+
+    local loaded = {}
+    local seen = {}
+    for line in response.Body:gmatch("[^\r\n]+") do
+        local suffix = line:lower():gsub("^%s+", ""):gsub("%s+$", "")
+        if suffix ~= "" and suffix:sub(1, 1) ~= "#" and not seen[suffix] then
+            seen[suffix] = true
+            table.insert(loaded, suffix)
+        end
+    end
+
+    table.sort(loaded, function(a, b)
+        if #a == #b then return a < b end
+        return #a > #b
+    end)
+    TrapSuffixes = loaded
+    TrapSuffixesLoaded = true
+    return true, "Đã tải " .. #TrapSuffixes .. " hậu tố trap"
+end
+
+do
+    local TrapFrame = Instance.new("Frame", ScreenGui)
+    TrapFrame.Name = "TrapFinderFrame"
+    TrapFrame.Size = UDim2.new(0, 330, 0, 430)
+    TrapFrame.Position = UDim2.new(0.5, -165, 0.5, -215)
+    TrapFrame.BackgroundColor3 = THEME.Background
+    TrapFrame.Visible = false
+    TrapFrame.ClipsDescendants = true
+    EnableDragging(TrapFrame)
+    Instance.new("UICorner", TrapFrame).CornerRadius = UDim.new(0, 8)
+    local TrapStroke = Instance.new("UIStroke", TrapFrame)
+    TrapStroke.Color = THEME.Accent
+    TrapStroke.Transparency = 0.5
+    TrapStroke.Thickness = 2
+
+    local TrapTitle = Instance.new("TextLabel", TrapFrame)
+    TrapTitle.Text = "Tìm từ bẫy"
+    TrapTitle.Font = Enum.Font.GothamBold
+    TrapTitle.TextSize = 16
+    TrapTitle.TextColor3 = THEME.Text
+    TrapTitle.Size = UDim2.new(1, -80, 0, 35)
+    TrapTitle.Position = UDim2.new(0, 10, 0, 2)
+    TrapTitle.BackgroundTransparency = 1
+    TrapTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+    local TrapClose = Instance.new("TextButton", TrapFrame)
+    TrapClose.Text = "X"
+    TrapClose.Font = Enum.Font.GothamBold
+    TrapClose.TextSize = 16
+    TrapClose.TextColor3 = Color3.fromRGB(255, 100, 100)
+    TrapClose.Size = UDim2.new(0, 35, 0, 35)
+    TrapClose.Position = UDim2.new(1, -40, 0, 0)
+    TrapClose.BackgroundTransparency = 1
+    TrapClose.MouseButton1Click:Connect(function()
+        TrapFrame.Visible = false
+    end)
+
+    local TrapStatus = Instance.new("TextLabel", TrapFrame)
+    TrapStatus.Text = "Chưa tải danh sách hậu tố"
+    TrapStatus.Font = Enum.Font.Gotham
+    TrapStatus.TextSize = 11
+    TrapStatus.TextColor3 = THEME.SubText
+    TrapStatus.Size = UDim2.new(1, -20, 0, 22)
+    TrapStatus.Position = UDim2.new(0, 10, 0, 38)
+    TrapStatus.BackgroundTransparency = 1
+    TrapStatus.TextXAlignment = Enum.TextXAlignment.Left
+
+    local TrapRefresh = Instance.new("TextButton", TrapFrame)
+    TrapRefresh.Text = "Tải / làm mới"
+    TrapRefresh.Font = Enum.Font.GothamBold
+    TrapRefresh.TextSize = 11
+    TrapRefresh.TextColor3 = THEME.Text
+    TrapRefresh.BackgroundColor3 = THEME.Accent
+    TrapRefresh.Size = UDim2.new(0, 100, 0, 25)
+    TrapRefresh.Position = UDim2.new(1, -110, 0, 65)
+    Instance.new("UICorner", TrapRefresh).CornerRadius = UDim.new(0, 4)
+
+    local TrapPrefix = Instance.new("TextLabel", TrapFrame)
+    TrapPrefix.Text = "Chữ bắt buộc: --"
+    TrapPrefix.Font = Enum.Font.GothamMedium
+    TrapPrefix.TextSize = 12
+    TrapPrefix.TextColor3 = THEME.Warning
+    TrapPrefix.Size = UDim2.new(1, -125, 0, 25)
+    TrapPrefix.Position = UDim2.new(0, 10, 0, 65)
+    TrapPrefix.BackgroundTransparency = 1
+    TrapPrefix.TextXAlignment = Enum.TextXAlignment.Left
+
+    local TrapList = Instance.new("ScrollingFrame", TrapFrame)
+    TrapList.Size = UDim2.new(1, -20, 1, -105)
+    TrapList.Position = UDim2.new(0, 10, 0, 98)
+    TrapList.BackgroundTransparency = 1
+    TrapList.ScrollBarThickness = 3
+    TrapList.ScrollBarImageColor3 = THEME.Accent
+    TrapList.CanvasSize = UDim2.new(0, 0, 0, 0)
+
+    local TrapLayout = Instance.new("UIListLayout", TrapList)
+    TrapLayout.Padding = UDim.new(0, 3)
+    TrapLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+    local function ClearTrapRows()
+        for _, child in ipairs(TrapList:GetChildren()) do
+            if child:IsA("GuiObject") and child ~= TrapLayout then
+                child:Destroy()
+            end
+        end
+    end
+
+    local function GetTrapRequiredPrefix()
+        -- Reuse the exact text already recognized by the main helper.
+        -- For example, when the main status says "Completed: omg", search
+        -- dictionary words that start with the full prefix "omg".
+        local detected = lastDetected or ""
+        detected = detected:lower():gsub("[%s%c]+", "")
+        if detected == "---" then
+            return ""
+        end
+        return detected
+    end
+
+    local function RenderTrapResults()
+        ClearTrapRows()
+        local prefix = GetTrapRequiredPrefix()
+        TrapPrefix.Text = "Bắt đầu bằng: " .. (prefix ~= "" and prefix or "--")
+
+        if not TrapSuffixesLoaded then
+            TrapStatus.Text = "Chưa có danh sách hậu tố trap"
+            return
+        end
+        if #TrapSuffixes == 0 then
+            TrapStatus.Text = "Tệp hậu tố chưa có dữ liệu hợp lệ"
+            return
+        end
+        if prefix == "" then
+            TrapStatus.Text = "Đang chờ chữ được nhận diện..."
+            return
+        end
+
+        local resultCount = 0
+        local maxResults = 250
+        for _, word in ipairs(Words) do
+            if not Blacklist[word] and not UsedWords[word] and word:sub(1, #prefix) == prefix then
+                for _, suffix in ipairs(TrapSuffixes) do
+                    if #word > #suffix and word:sub(-#suffix) == suffix then
+                        resultCount = resultCount + 1
+                        local row = Instance.new("TextButton", TrapList)
+                        row.Name = "TrapResult"
+                        row.Size = UDim2.new(1, -5, 0, 30)
+                        row.BackgroundColor3 = (resultCount % 2 == 0) and Color3.fromRGB(25, 25, 30) or THEME.ItemBG
+                        row.Text = ""
+                        row.AutoButtonColor = false
+                        Instance.new("UICorner", row).CornerRadius = UDim.new(0, 4)
+
+                        local wordLabel = Instance.new("TextLabel", row)
+                        wordLabel.Text = word
+                        wordLabel.Font = Enum.Font.GothamBold
+                        wordLabel.TextSize = 12
+                        wordLabel.TextColor3 = THEME.Text
+                        wordLabel.Size = UDim2.new(0.65, -8, 1, 0)
+                        wordLabel.Position = UDim2.new(0, 8, 0, 0)
+                        wordLabel.BackgroundTransparency = 1
+                        wordLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+                        local suffixLabel = Instance.new("TextLabel", row)
+                        suffixLabel.Text = "đuôi bẫy: " .. suffix
+                        suffixLabel.Font = Enum.Font.GothamMedium
+                        suffixLabel.TextSize = 11
+                        suffixLabel.TextColor3 = THEME.Warning
+                        suffixLabel.Size = UDim2.new(0.35, -8, 1, 0)
+                        suffixLabel.Position = UDim2.new(0.65, 0, 0, 0)
+                        suffixLabel.BackgroundTransparency = 1
+                        suffixLabel.TextXAlignment = Enum.TextXAlignment.Right
+
+                        row.MouseButton1Click:Connect(function()
+                            SmartType(word, lastDetected, true, true)
+                        end)
+
+                        if resultCount >= maxResults then break end
+                    end
+                end
+            end
+            if resultCount >= maxResults then break end
+        end
+
+        TrapStatus.Text = resultCount > 0 and ("Tìm thấy " .. resultCount .. " lựa chọn trap") or "Không tìm thấy từ phù hợp"
+        TrapList.CanvasSize = UDim2.new(0, 0, 0, TrapLayout.AbsoluteContentSize.Y)
+    end
+
+    TrapRefresh.MouseButton1Click:Connect(function()
+        TrapStatus.Text = "Đang tải danh sách hậu tố..."
+        local ok, message = FetchTrapSuffixes()
+        TrapStatus.Text = message
+        if ok then RenderTrapResults() end
+    end)
+
+    TrapFinderBtn.MouseButton1Click:Connect(function()
+        TrapFrame.Visible = not TrapFrame.Visible
+        if TrapFrame.Visible then
+            if not TrapSuffixesLoaded then
+                TrapStatus.Text = "Đang tải danh sách hậu tố..."
+                local ok, message = FetchTrapSuffixes()
+                TrapStatus.Text = message
+            end
+            RenderTrapResults()
+        end
+    end)
+
+    task.spawn(function()
+        local previousPrefix = ""
+        local previousDetected = ""
+        while TrapFrame.Parent do
+            task.wait(0.5)
+            if TrapFrame.Visible then
+                local currentPrefix = GetTrapRequiredPrefix()
+                local currentDetected = lastDetected or ""
+                if currentPrefix ~= previousPrefix or currentDetected ~= previousDetected then
+                    previousPrefix = currentPrefix
+                    previousDetected = currentDetected
+                    RenderTrapResults()
+                end
+            end
+        end
+    end)
+end
 
 local StatsData = {}
 
@@ -2531,7 +2867,7 @@ do
     sc.TextColor3 = THEME.SubText
     sc.Font = Enum.Font.Gotham
     sc.TextSize = 12
-    sc.Text = "Words: 0"
+    sc.Text = "Số từ: 0"
     sc.Parent = sf
     StatsData.Count = sc
 end
@@ -2546,7 +2882,7 @@ runConn = RunService.RenderStepped:Connect(function()
         if isTyping and (tick() - lastTypingStart) > 15 then
             isTyping = false
             isAutoPlayScheduled = false
-            StatusText.Text = "Typing State Reset (Watchdog)"
+            StatusText.Text = "Đã đặt lại trạng thái gõ (giám sát)"
             StatusText.TextColor3 = THEME.Warning
         end
         
@@ -2601,7 +2937,7 @@ runConn = RunService.RenderStepped:Connect(function()
                 end
                 
                 if bestWord then
-                    StatusText.Text = "PANIC SAVE!"
+                    StatusText.Text = "LƯU KHẨN CẤP!"
                     StatusText.TextColor3 = Color3.fromRGB(255, 50, 50)
                     SmartType(bestWord, detected, false)
                 end
@@ -2692,18 +3028,18 @@ runConn = RunService.RenderStepped:Connect(function()
         local typeVisible = typeLbl and typeLbl.Visible
         if typeVisible and not lastTypeVisible then
             UsedWords = {}
-            StatusText.Text = "New Round - Words Reset"
+            StatusText.Text = "Vòng mới - Đã đặt lại danh sách từ"
             StatusText.TextColor3 = THEME.Success
         end
         lastTypeVisible = typeVisible
         if censored then
-            if StatusText.Text ~= "Word is Censored" then
-                StatusText.Text = "Word is Censored"
+            if StatusText.Text ~= "Từ bị ẩn" then
+                StatusText.Text = "Từ bị ẩn"
                 StatusText.TextColor3 = THEME.Warning
                 Tween(StatusDot, {BackgroundColor3 = THEME.Warning})
                 
                 for _, btn in ipairs(ButtonCache) do btn.Visible = false end
-                StatsData.Count.Text = "Words: 0"
+                StatsData.Count.Text = "Số từ: 0"
             end
             
             listUpdatePending = false
@@ -2721,16 +3057,16 @@ runConn = RunService.RenderStepped:Connect(function()
             for _, b in ipairs(ButtonCache) do
                 if b.Visible then visCount = visCount + 1 end
             end
-            StatsData.Count.Text = "Words: " .. visCount .. "+"
+            StatsData.Count.Text = "Số từ: " .. visCount .. "+"
         end
 
         if not isVisible then
-            if StatusText.Text ~= "Not in Round" then
-                StatusText.Text = "Not in Round"
+            if StatusText.Text ~= "Không trong vòng chơi" then
+                StatusText.Text = "Không trong vòng chơi"
                 StatusText.TextColor3 = THEME.SubText
                 Tween(StatusDot, {BackgroundColor3 = THEME.SubText})
                 for _, btn in ipairs(ButtonCache) do btn.Visible = false end
-                StatsData.Count.Text = "Words: 0"
+                StatsData.Count.Text = "Số từ: 0"
             end
             lastDetected = "---"
         elseif detected ~= lastDetected or requiredLetter ~= lastRequiredLetter or forceUpdateList then
@@ -2750,7 +3086,7 @@ runConn = RunService.RenderStepped:Connect(function()
                 for _, b in ipairs(ButtonCache) do
                     if b.Visible then visCount = visCount + 1 end
                 end
-                StatsData.Count.Text = "Words: " .. visCount .. "+"
+                StatsData.Count.Text = "Số từ: " .. visCount .. "+"
             else
                 if detected ~= "" then
                     local isCompleted = false
