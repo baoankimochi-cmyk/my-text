@@ -209,7 +209,7 @@ local Words = {}
 local SeenWords = {}
 
 local function LoadList(fname)
-    UpdateStatus("Parsing word list...", THEME.Warning)
+    UpdateStatus("phân tích danh sách từ ngữ...", THEME.Warning)
     if isfile(fname) then
         local content = readfile(fname)
         for w in content:gmatch("[^\r\n]+") do
@@ -665,7 +665,7 @@ Instance.new("UICorner", ExpandBtn).CornerRadius = UDim.new(0, 6)
 
 ExpandBtn.MouseButton1Click:Connect(function()
     settingsCollapsed = not settingsCollapsed
-    ExpandBtn.Text = settingsCollapsed and "v Show Settings v" or "^ Hide Settings ^"
+    ExpandBtn.Text = settingsCollapsed and "v hiện cài đặt v" or "^ ẩn cài đặt ^"
     UpdateLayout()
 end)
 
@@ -856,7 +856,7 @@ UserInputService.InputEnded:Connect(function(input)
 end)
 
 local SliderLabel = Instance.new("TextLabel", SlidersFrame)
-SliderLabel.Text = "Speed: " .. currentCPM .. " CPM"
+SliderLabel.Text = "tốc độ: " .. currentCPM .. " CPM"
 SliderLabel.Font = Enum.Font.GothamMedium
 SliderLabel.TextSize = 12
 SliderLabel.TextColor3 = THEME.SubText
@@ -882,7 +882,7 @@ SliderBtn.BackgroundTransparency = 1
 SliderBtn.Text = ""
 
 local ErrorLabel = Instance.new("TextLabel", SlidersFrame)
-ErrorLabel.Text = "Error Rate: " .. errorRate .. "%"
+ErrorLabel.Text = "tỉ lệ gõ sai: " .. errorRate .. "%"
 ErrorLabel.Font = Enum.Font.GothamMedium
 ErrorLabel.TextSize = 11
 ErrorLabel.TextColor3 = THEME.SubText
@@ -915,7 +915,7 @@ SetupSlider(ErrorBtn, ErrorBg, ErrorFill, function(pct)
 end)
 
 local ThinkLabel = Instance.new("TextLabel", SlidersFrame)
-ThinkLabel.Text = string.format("Think: %.2fs", thinkDelayCurrent)
+ThinkLabel.Text = string.format("nghĩ: %.2fs", thinkDelayCurrent)
 ThinkLabel.Font = Enum.Font.GothamMedium
 ThinkLabel.TextSize = 11
 ThinkLabel.TextColor3 = THEME.SubText
@@ -968,53 +968,53 @@ local function CreateToggle(text, pos, callback)
     return btn
 end
 
-local HumanizeBtn = CreateToggle("Humanize: "..(useHumanization and "ON" or "OFF"), UDim2.new(0, 15, 0, 5), function()
+local HumanizeBtn = CreateToggle("thực tế hóa: "..(useHumanization and "bật" or "tắt"), UDim2.new(0, 15, 0, 5), function()
     useHumanization = not useHumanization
     Config.Humanize = useHumanization
-    return useHumanization, "Humanize: "..(useHumanization and "ON" or "OFF"), useHumanization and THEME.Success or Color3.fromRGB(255, 100, 100)
+    return useHumanization, "Thực tế hóa: "..(useHumanization and "bật" or "tắt"), useHumanization and THEME.Success or Color3.fromRGB(255, 100, 100)
 end)
 HumanizeBtn.TextColor3 = useHumanization and THEME.Success or Color3.fromRGB(255, 100, 100)
 
-local FingerBtn = CreateToggle("10-Finger: "..(useFingerModel and "ON" or "OFF"), UDim2.new(0, 105, 0, 5), function()
+local FingerBtn = CreateToggle("10-ngón: "..(useFingerModel and "bật" or "tắt"), UDim2.new(0, 105, 0, 5), function()
     useFingerModel = not useFingerModel
     Config.FingerModel = useFingerModel
-    return useFingerModel, "10-Finger: "..(useFingerModel and "ON" or "OFF"), useFingerModel and THEME.Success or Color3.fromRGB(255, 100, 100)
+    return useFingerModel, "10-ngón: "..(useFingerModel and "bật" or "tắt"), useFingerModel and THEME.Success or Color3.fromRGB(255, 100, 100)
 end)
 FingerBtn.TextColor3 = useFingerModel and THEME.Success or Color3.fromRGB(255, 100, 100)
 
-local KeyboardBtn = CreateToggle("Keyboard: "..(showKeyboard and "ON" or "OFF"), UDim2.new(0, 195, 0, 5), function()
+local KeyboardBtn = CreateToggle("bàn phím: "..(showKeyboard and "bật" or "tắt"), UDim2.new(0, 195, 0, 5), function()
     showKeyboard = not showKeyboard
     Config.ShowKeyboard = showKeyboard
     KeyboardFrame.Visible = showKeyboard
-    return showKeyboard, "Keyboard: "..(showKeyboard and "ON" or "OFF"), showKeyboard and THEME.Success or Color3.fromRGB(255, 100, 100)
+    return showKeyboard, "bàn phím: "..(showKeyboard and "bật" or "tắt"), showKeyboard and THEME.Success or Color3.fromRGB(255, 100, 100)
 end)
 KeyboardBtn.TextColor3 = showKeyboard and THEME.Success or Color3.fromRGB(255, 100, 100)
 
-local SortBtn = CreateToggle("Sort: "..sortMode, UDim2.new(0, 15, 0, 33), function()
-    if sortMode == "Random" then sortMode = "Shortest"
-    elseif sortMode == "Shortest" then sortMode = "Longest"
-    elseif sortMode == "Longest" then sortMode = "Killer"
-    else sortMode = "Random" end
+local SortBtn = CreateToggle("loại: "..sortMode, UDim2.new(0, 15, 0, 33), function()
+    if sortMode == "ngẫu nhiên" then sortMode = "ngắn nhất"
+    elseif sortMode == "ngắn nhất" then sortMode = "dài nhất"
+    elseif sortMode == "dài nhất" then sortMode = "sát thủ"
+    else sortMode = "ngẫu nhiên" end
     
     Config.SortMode = sortMode
     lastDetected = "---"
-    return true, "Sort: "..sortMode, THEME.Accent
+    return true, "loại: "..sortMode, THEME.Accent
 end)
 SortBtn.TextColor3 = THEME.Accent
 SortBtn.Size = UDim2.new(0, 130, 0, 24)
 
-local AutoBtn = CreateToggle("Auto Play: "..(autoPlay and "ON" or "OFF"), UDim2.new(0, 150, 0, 33), function()
+local AutoBtn = CreateToggle("auto chơi: "..(autoPlay and "bật" or "tắt"), UDim2.new(0, 150, 0, 33), function()
     autoPlay = not autoPlay
     Config.AutoPlay = autoPlay
-    return autoPlay, "Auto Play: "..(autoPlay and "ON" or "OFF"), autoPlay and THEME.Success or Color3.fromRGB(255, 100, 100)
+    return autoPlay, "Auto chơi: "..(autoPlay and "bật" or "tắt"), autoPlay and THEME.Success or Color3.fromRGB(255, 100, 100)
 end)
 AutoBtn.TextColor3 = autoPlay and THEME.Success or Color3.fromRGB(255, 100, 100)
 AutoBtn.Size = UDim2.new(0, 130, 0, 24)
 
-local AutoJoinBtn = CreateToggle("Auto Join: "..(autoJoin and "ON" or "OFF"), UDim2.new(0, 15, 0, 61), function()
+local AutoJoinBtn = CreateToggle("tự động Join: "..(autoJoin and "bật" or "tắt"), UDim2.new(0, 15, 0, 61), function()
     autoJoin = not autoJoin
     Config.AutoJoin = autoJoin
-    return autoJoin, "Auto Join: "..(autoJoin and "ON" or "OFF"), autoJoin and THEME.Success or Color3.fromRGB(255, 100, 100)
+    return autoJoin, "tự động join: "..(autoJoin and "bật" or "tắt"), autoJoin and THEME.Success or Color3.fromRGB(255, 100, 100)
 end)
 AutoJoinBtn.TextColor3 = autoJoin and THEME.Success or Color3.fromRGB(255, 100, 100)
 AutoJoinBtn.Size = UDim2.new(0, 265, 0, 24)
@@ -1076,24 +1076,24 @@ CreateCheckbox("1v1", UDim2.new(0, 15, 0, 88), "_1v1")
 CreateCheckbox("4 Player", UDim2.new(0, 110, 0, 88), "_4p")
 CreateCheckbox("8 Player", UDim2.new(0, 205, 0, 88), "_8p")
 
-local BlatantBtn = CreateToggle("Blatant Mode: "..(isBlatant and "ON" or "OFF"), UDim2.new(0, 15, 0, 115), function()
+local BlatantBtn = CreateToggle("Chế độ công khai: "..(isBlatant and "bật" or "tắt"), UDim2.new(0, 15, 0, 115), function()
     isBlatant = not isBlatant
     Config.Blatant = isBlatant
-    return isBlatant, "Blatant Mode: "..(isBlatant and "ON" or "OFF"), isBlatant and Color3.fromRGB(255, 80, 80) or THEME.SubText
+    return isBlatant, "Chế độ công khai: "..(isBlatant and "bật" or "tắt"), isBlatant and Color3.fromRGB(255, 80, 80) or THEME.SubText
 end)
 BlatantBtn.TextColor3 = isBlatant and Color3.fromRGB(255, 80, 80) or THEME.SubText
 BlatantBtn.Size = UDim2.new(0, 130, 0, 24)
 
-local RiskyBtn = CreateToggle("Risky Mistakes: "..(riskyMistakes and "ON" or "OFF"), UDim2.new(0, 150, 0, 115), function()
+local RiskyBtn = CreateToggle("Những sai lầm đầy rủi ro: "..(riskyMistakes and "bật" or "tắt"), UDim2.new(0, 150, 0, 115), function()
     riskyMistakes = not riskyMistakes
     Config.RiskyMistakes = riskyMistakes
-    return riskyMistakes, "Risky Mistakes: "..(riskyMistakes and "ON" or "OFF"), riskyMistakes and Color3.fromRGB(255, 80, 80) or THEME.SubText
+    return riskyMistakes, "Những sai lầm đầy rủi ro: "..(riskyMistakes and "bật" or "tắt"), riskyMistakes and Color3.fromRGB(255, 80, 80) or THEME.SubText
 end)
 RiskyBtn.TextColor3 = riskyMistakes and Color3.fromRGB(255, 80, 80) or THEME.SubText
 RiskyBtn.Size = UDim2.new(0, 130, 0, 24)
 
 local ManageWordsBtn = Instance.new("TextButton", TogglesFrame)
-ManageWordsBtn.Text = "Manage Custom Words"
+ManageWordsBtn.Text = "Quản lý từ tùy chỉnh"
 ManageWordsBtn.Font = Enum.Font.GothamMedium
 ManageWordsBtn.TextSize = 11
 ManageWordsBtn.TextColor3 = THEME.Accent
@@ -1103,7 +1103,7 @@ ManageWordsBtn.Position = UDim2.new(0, 15, 0, 145)
 Instance.new("UICorner", ManageWordsBtn).CornerRadius = UDim.new(0, 4)
 
 local WordBrowserBtn = Instance.new("TextButton", TogglesFrame)
-WordBrowserBtn.Text = "Word Browser"
+WordBrowserBtn.Text = "Tra từ"
 WordBrowserBtn.Font = Enum.Font.GothamMedium
 WordBrowserBtn.TextSize = 11
 WordBrowserBtn.TextColor3 = Color3.fromRGB(200, 150, 255)
@@ -1113,7 +1113,7 @@ WordBrowserBtn.Position = UDim2.new(0, 15, 0, 175)
 Instance.new("UICorner", WordBrowserBtn).CornerRadius = UDim.new(0, 4)
 
 local ServerBrowserBtn = Instance.new("TextButton", TogglesFrame)
-ServerBrowserBtn.Text = "Server Browser"
+ServerBrowserBtn.Text = "Tra server"
 ServerBrowserBtn.Font = Enum.Font.GothamMedium
 ServerBrowserBtn.TextSize = 11
 ServerBrowserBtn.TextColor3 = Color3.fromRGB(100, 200, 255)
@@ -1516,7 +1516,7 @@ do
     WBStroke.Thickness = 2
 
     local WBHeader = Instance.new("TextLabel", WordBrowserFrame)
-    WBHeader.Text = "Word Browser"
+    WBHeader.Text = "Tra từ"
     WBHeader.Font = Enum.Font.GothamBold
     WBHeader.TextSize = 16
     WBHeader.TextColor3 = THEME.Text
@@ -1540,7 +1540,7 @@ do
     WBStartBox.Size = UDim2.new(0.4, 0, 0, 24)
     WBStartBox.Position = UDim2.new(0, 10, 0, 45)
     Instance.new("UICorner", WBStartBox).CornerRadius = UDim.new(0, 4)
-    SetupPhantomBox(WBStartBox, "Starts with...")
+    SetupPhantomBox(WBStartBox, "bắt đầu bằng...")
 
     local WBEndBox = Instance.new("TextBox", WordBrowserFrame)
     WBEndBox.Font = Enum.Font.Gotham
@@ -1549,7 +1549,7 @@ do
     WBEndBox.Size = UDim2.new(0.4, 0, 0, 24)
     WBEndBox.Position = UDim2.new(0.45, 0, 0, 45)
     Instance.new("UICorner", WBEndBox).CornerRadius = UDim.new(0, 4)
-    SetupPhantomBox(WBEndBox, "Ends with...")
+    SetupPhantomBox(WBEndBox, "kết thúc bằng...")
 
     local WBLengthBox = Instance.new("TextBox", WordBrowserFrame)
     WBLengthBox.Font = Enum.Font.Gotham
@@ -1561,7 +1561,7 @@ do
     SetupPhantomBox(WBLengthBox, "Len...")
 
     local WBSearchBtn = Instance.new("TextButton", WordBrowserFrame)
-    WBSearchBtn.Text = "Go"
+    WBSearchBtn.Text = "tra"
     WBSearchBtn.Font = Enum.Font.GothamBold
     WBSearchBtn.TextSize = 12
     WBSearchBtn.BackgroundColor3 = THEME.Accent
@@ -1591,8 +1591,8 @@ do
         local eVal = WBEndBox.Text
         local lVal = tonumber(WBLengthBox.Text)
         
-        if sVal == "Starts with..." then sVal = "" end
-        if eVal == "Ends with..." then eVal = "" end
+        if sVal == "bắt đầu bằng..." then sVal = "" end
+        if eVal == "kết thúc bằng..." then eVal = "" end
         
         sVal = sVal:lower():gsub("[%s%c]+", "")
         eVal = eVal:lower():gsub("[%s%c]+", "")
@@ -1764,8 +1764,8 @@ local function GetKeyCode(char)
             if char == "z" then return Enum.KeyCode.W end
             if char == "w" then return Enum.KeyCode.Z end
             if char == "m" then return Enum.KeyCode.Semicolon end -- M is often next to L
-            -- NOTE: AZERTY is tricky because M can vary, but standard AZERTY FR places M right of L (where semi-colon is on QWERTY)
-            -- However, many games might use scan codes where M is actually comma or something else depending on the specific AZERTY variant.
+            -- NOTE: AZERTY is tricky because M can vary, but standard AZERTY FR places M right of L (where semi-colon is bật QWERTY)
+            -- However, many games might use scan codes where M is actually comma or something else depending bật the specific AZERTY variant.
             -- For standard AZERTY (France), M is indeed usually where ; is.
         end
         return Enum.KeyCode[char:upper()]
