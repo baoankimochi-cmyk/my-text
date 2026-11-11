@@ -11732,14 +11732,11 @@ alwise
 alwite
 alxasaurus
 aly
-alya
+alyawarr
+alyawarre
 alycompaine
 alycompaines
-alymphia
-alymphopotent
 alypin
-alypine
-alypum
 alysson
 alyssum
 alyssums
@@ -477592,3 +477589,7 @@ dityrosine
 dityrosines
 deredere
 derederes
+zaalouk
+zaalouks
+e-infrastructure
+e-infrastructures
